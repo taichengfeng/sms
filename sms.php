@@ -12,15 +12,8 @@ $a=hiapi_get_auth($host);
 $token=$a[0];
 $sign=$a[1];
 
-$phone="0970030222";
-$msg="testtest from local";
-
-$msgid="A8032153305181373807"; //Cancel 
-$sch_time="201306150000"; //假如要設定預約傳送日期
-
-//smsSend();
-//smsQuery();
-//smsCancel();
+$phone=$_GET["phone"];
+$msg=$_GET["msg"];
 
 switch ($_GET["op"]){
 	case "send": 
@@ -37,7 +30,7 @@ switch ($_GET["op"]){
 }
 
 function smsSend(){
-  global $isvid,$serviceid,$isvkey,$host,$token,$sign,$phone,$msg,$sch_time;  
+  global $isvid,$serviceid,$isvkey,$host,$token,$sign,$phone,$msg;  
   //$smsserver="http://sms.hiapi1.lab.hipaas.hinet.net/hisms/servlet/send";
   
   if($_GET["sch_time"]!=""){
@@ -56,8 +49,12 @@ function smsSend(){
 }
 
 function smsCancel(){
-  global $isvid,$serviceid,$isvkey,$host,$token,$sign,$phone,$msgid;  
+  global $isvid,$serviceid,$isvkey,$host,$token,$sign,$phone;  
   //$smsserver="http://sms.hiapi1.lab.hipaas.hinet.net/hisms/servlet/send";
+  if($_GET["msgid"]!=""){
+  	$msgid = $_GET["msgid"]; 
+  }
+  
   $smsserver="hiair-api.hicloud.net.tw/hisms/servlet/cancel"; 
   $ch=curl_init();
   curl_setopt($ch, CURLOPT_URL, $smsserver);
@@ -75,7 +72,7 @@ function smsQuery(){
   global $isvid,$serviceid,$isvkey,$host,$token,$sign,$phone,$msgid;  
   //$smsserver="http://sms.hiapi1.lab.hipaas.hinet.net/hisms/servlet/send";
   if($_GET["msgid"]!=""){
-  	$sch_time = $_GET["msgid"]; 
+  	$msgid = $_GET["msgid"]; 
   }
   $smsserver="hiair-api.hicloud.net.tw/hisms/servlet/query"; 
   $ch=curl_init();
